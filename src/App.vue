@@ -22,7 +22,7 @@
       />
     </div>
     <div class="chosen">
-      <div class="chosen-bg"></div>
+      <div class="chosen-bg" />
       <Die
         v-for="die in chosenDice"
         :key="die.color"

@@ -11,7 +11,7 @@
       :key="n"
       class="dot"
       :style="'background-color:' + dotColor"
-    ></div>
+    />
   </button>
 </template>
 
@@ -25,14 +25,15 @@ export default {
     },
     value: {
       type: Number,
+      default: 0,
     },
     dotColor: {
       type: String,
       required: true,
     },
   },
-  watch: {},
   computed: {},
+  watch: {},
 };
 </script>
 
