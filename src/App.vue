@@ -68,7 +68,7 @@ export default {
       this.syncDice(eventData);
     };
 
-    this.connection.onopen = event => {
+    this.connection.onopen = () => {
       console.log('Successfully connected to the echo websocket server...');
     };
   },
