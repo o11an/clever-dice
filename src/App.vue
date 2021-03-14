@@ -21,6 +21,7 @@
         @changed="die.value = $event" />
     </div>
     <div class="chosen">
+      <div class="chosen-bg"></div>
       <Die 
         v-for="die in chosenDice" 
         :key="die.color" 
@@ -73,11 +74,12 @@ export default {
       this.chosenDice = this.chosenDice.filter(item => item.color != die.color);
     },
     roll() {
+      this.diceRollSound.load();
+      this.diceRollSound.play();
       this.dice.map(i => {
         i.roll++
         return i;
       });
-      this.diceRollSound.play();
     },
     reset() {
       this.dice = [...cleverHochDrei];
@@ -89,47 +91,73 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin:0;
+  background: url('./assets/bg.jpg');
+  background-size:500px;
+  height:100vh;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
+  padding: 20px 0 0 20px;
   display:flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap:wrap;
+  max-width:870px;
 }
 .discarded {
-  width:60%;
-  background: #ccc;
+  width:80%;
+  max-width:870px;
+  background: #9a6b0038;
+  background-size:cover;
   height: 25vh;
-  border-radius:50%;
+  border-radius:10px;
   display:flex;
   justify-content: center;
   align-items: center;
   margin-bottom:3vh;
+  box-shadow:0 0 15px -7px rgba(0, 0, 0, 0.5);
 }
 .table {
-  width:60%;
+  width: 60%;
+  max-width:650px;
+  padding: 50px 90px;
   height: 50vh;
-  background: #d4b992;
+  background: url('./assets/wood.jpg');
+  background-size:cover;
   display:flex;
   justify-content: center;
   align-items: center;
-  border-radius: 40px;
+  flex-wrap:wrap;
+  border-radius: 10px;
+  box-shadow:0 0 15px -7px rgba(0, 0, 0, 0.5);
 }
 .chosen {
-  width: 15%;
-  margin-left:5%;
+  width: 18%;
+  max-width:calc(870px - 670px);
+  background: url('./assets/velvet.jpg');
+  background-size:cover;
+  margin-left:2%;
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
-  border-radius: 40px;
+  border-radius: 10px;
   display:flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 35px 0 0;
+  padding: 1% 0 0;
 }
+
+.chosen-bg {
+  
+}
+
 .controls {
   width:100%;
   position: fixed;
