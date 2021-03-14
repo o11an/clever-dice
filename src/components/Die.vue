@@ -1,6 +1,17 @@
 <template>
-  <button class="die" :class="'die--'+ dieValue" :style="'background-color:' + color + ';color:'+ dotColor" @click="$emit('clicked')">
-    <div v-for="n in dieValue" :key="n" class="dot" :style="'background-color:' + dotColor"></div>
+  <button
+    v-if="value > 0"
+    class="die"
+    :class="'die--' + value"
+    :style="'background-color:' + color + ';color:' + dotColor"
+    @click="$emit('clicked')"
+  >
+    <div
+      v-for="n in value"
+      :key="n"
+      class="dot"
+      :style="'background-color:' + dotColor"
+    />
   </button>
 </template>
 
@@ -8,37 +19,22 @@
 export default {
   name: 'Die',
   props: {
-    roll: {
-      type: Number,
-      required: true
-    },
     color: {
       type: String,
       required: true
     },
-    staticValue: {
+    value: {
       type: Number,
+      default: 0
     },
     dotColor: {
       type: String,
       required: true
     }
-  } ,
-  data: () => ({
-    value: 0
-  }),
-  watch: {
-    roll() {
-      this.value = Math.floor(Math.random() * 6) + 1;
-      this.$emit('changed', this.value);
-    } 
   },
-  computed: {
-    dieValue() {
-      return this.staticValue || this.value;
-    }
-  }
-}
+  computed: {},
+  watch: {}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -46,18 +42,18 @@ export default {
 .die {
   width: 100px;
   height: 100px;
-  border:none;
+  border: none;
   border-radius: 20px;
-  font-weight:bold;
-  font-size:50px;
+  font-weight: bold;
+  font-size: 50px;
   box-shadow: 0 0 18px -7px rgba(0, 0, 0, 0.7);
   transition: box-shadow 200ms ease;
   margin: 10px;
-  padding:10px;
-  display:flex;
+  padding: 10px;
+  display: flex;
   justify-content: space-between;
   position: relative;
-  cursor:pointer;
+  cursor: pointer;
   outline: none;
 }
 .die:hover {
@@ -88,27 +84,27 @@ export default {
 }
 .die--5 .dot:nth-of-type(5) {
   position: absolute;
-  top:50%;
-  left:50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 20%; 
+  width: 20%;
   height: 20%;
 }
 .die--6 .dot:nth-of-type(5),
 .die--6 .dot:nth-of-type(6) {
   position: absolute;
-  top:50%;
-  left:10%;
+  top: 50%;
+  left: 10%;
   transform: translateY(-50%);
-  width: 20%; 
+  width: 20%;
   height: 20%;
 }
 .die--6 .dot:nth-of-type(6) {
-  left:auto;
-  right:10%;
+  left: auto;
+  right: 10%;
 }
 .dot {
-  width: 25%; 
+  width: 25%;
   height: 25%;
   border-radius: 50%;
 }
