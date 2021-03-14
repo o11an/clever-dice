@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="logo">clever dice</div>
     <div class="discarded">
       <Die
         v-for="die in discardedDice"
@@ -145,12 +146,12 @@ export default {
 }
 body {
   margin: 0;
-  background: url('./assets/bg.jpg');
-  background-size: 500px;
+  background: url('./assets/bg-pattern.jpg');
+  background-size: 50px;
   height: 100vh;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Ravi Prakash', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -160,6 +161,11 @@ body {
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 870px;
+}
+.logo {
+  width: 100%;
+  text-align: center;
+  font-size: 70px;
 }
 .discarded {
   width: 80%;
@@ -177,7 +183,7 @@ body {
 .table {
   width: 60%;
   max-width: 650px;
-  padding: 50px 90px;
+  padding: 50px 70px;
   height: 50vh;
   background: url('./assets/wood.jpg');
   background-size: cover;
@@ -191,30 +197,40 @@ body {
 .chosen {
   width: 18%;
   max-width: calc(870px - 670px);
-  background: url('./assets/velvet.jpg');
-  background-size: cover;
+  overflow: hidden;
   margin-left: 2%;
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  border-radius: 40px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 1% 0 0;
+  position: relative;
 }
 
 .chosen-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: url('./assets/velvet.jpg');
+  background-size: cover;
+  filter: hue-rotate(63deg) brightness(4);
 }
 
 .controls {
-  width: 100%;
+  width: 20vw;
+  height: 100vh;
   position: fixed;
-  left: 0;
-  bottom: 0;
+  right: 0;
+  top: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 15vh;
   background: #333;
 }
 .button {
@@ -226,5 +242,6 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   margin: 0 20px;
+  font-family: inherit;
 }
 </style>
