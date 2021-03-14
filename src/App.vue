@@ -23,14 +23,16 @@
     </div>
     <div class="chosen">
       <div class="chosen-bg" />
-      <Die
-        v-for="die in chosenDice"
-        :key="die.color"
-        :color="die.color"
-        :dot-color="die.dotColor"
-        :value="die.value"
-        @clicked="returnChosenDice(die)"
-      />
+      <div class="chosen-inner">
+        <Die
+          v-for="die in chosenDice"
+          :key="die.color"
+          :color="die.color"
+          :dot-color="die.dotColor"
+          :value="die.value"
+          @clicked="returnChosenDice(die)"
+        />
+      </div>
     </div>
     <div class="controls">
       <button class="button button--roll" @click="roll">Roll</button>
@@ -73,11 +75,10 @@ export default {
     };
   },
   methods: {
-    rollDice() {
-      this.dice.forEach(die => (die.value = Math.floor(Math.random() * 6) + 1));
+    roll() {
       this.diceRollSound.load();
       this.diceRollSound.play();
-
+      this.dice.forEach(die => (die.value = Math.floor(Math.random() * 6) + 1));
       this.sendMessage();
     },
     chooseDice(die) {
@@ -156,20 +157,22 @@ body {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  max-width: 870px;
+  max-width: calc(850px + 20vw);
+  margin: 0 auto;
+  padding-right: calc(20vw + 30px);
 }
 .logo {
   width: 100%;
   text-align: center;
-  font-size: 70px;
+  font-size: 62px;
   transform: rotate(-5deg);
 }
 .discarded {
-  width: 80%;
+  width: 100%;
   max-width: 870px;
   background: #9a6b0038;
   background-size: cover;
-  height: 25vh;
+  height: 23vh;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -178,10 +181,10 @@ body {
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
 }
 .table {
-  width: 60%;
+  width: 71%;
   max-width: 650px;
-  padding: 50px 70px;
-  height: 50vh;
+  padding: 50px;
+  height: 53vh;
   background: url('./assets/wood.jpg');
   background-size: cover;
   display: flex;
@@ -192,18 +195,24 @@ body {
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
 }
 .chosen {
-  width: 18%;
+  width: 26%;
   max-width: calc(870px - 670px);
   overflow: hidden;
-  margin-left: 2%;
+  margin-left: 3%;
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.3);
   border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.chosen-inner {
+  height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 1% 0 0;
-  position: relative;
 }
 
 .chosen-bg {
