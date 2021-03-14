@@ -21,19 +21,19 @@ export default {
   props: {
     color: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: Number,
-      default: 0
+      default: 0,
     },
     dotColor: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {},
-  watch: {}
+  watch: {},
 };
 </script>
 

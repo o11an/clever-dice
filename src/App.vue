@@ -47,14 +47,14 @@ import { cleverHochDrei } from './settings.js';
 export default {
   name: 'App',
   components: {
-    Die
+    Die,
   },
   data: () => ({
     dice: [...cleverHochDrei],
     discardedDice: [],
     chosenDice: [],
     diceRollSound: new Audio(require('./assets/dice-roll.mp3')),
-    connection: null
+    connection: null,
   }),
   mounted() {
     var url = new URL(window.location.href);
@@ -65,7 +65,7 @@ export default {
 
     this.connection = new WebSocket(url);
 
-    this.connection.onmessage = event => {
+    this.connection.onmessage = (event) => {
       let eventData = JSON.parse(event.data);
       this.syncDice(eventData);
     };
@@ -78,22 +78,24 @@ export default {
     roll() {
       this.diceRollSound.load();
       this.diceRollSound.play();
-      this.dice.forEach(die => (die.value = Math.floor(Math.random() * 6) + 1));
+      this.dice.forEach(
+        (die) => (die.value = Math.floor(Math.random() * 6) + 1)
+      );
       this.sendMessage();
     },
     chooseDice(die) {
       this.chosenDice.push(die);
       if (this.chosenDice.length === 3) {
         this.discardedDice = this.discardedDice.concat(
-          this.dice.filter(item => item.color != die.color)
+          this.dice.filter((item) => item.color != die.color)
         );
         this.dice = [];
       } else {
         this.discardedDice = this.discardedDice.concat(
-          this.dice.filter(item => item.value < die.value)
+          this.dice.filter((item) => item.value < die.value)
         );
         this.dice = this.dice.filter(
-          item => item.value >= die.value && item.color != die.color
+          (item) => item.value >= die.value && item.color != die.color
         );
       }
       this.sendMessage();
@@ -101,18 +103,20 @@ export default {
     returnDiscardedDice(die) {
       this.dice.push(die);
       this.discardedDice = this.discardedDice.filter(
-        item => item.color != die.color
+        (item) => item.color != die.color
       );
       this.sendMessage();
     },
     returnChosenDice(die) {
       this.dice.push(die);
-      this.chosenDice = this.chosenDice.filter(item => item.color != die.color);
+      this.chosenDice = this.chosenDice.filter(
+        (item) => item.color != die.color
+      );
       this.sendMessage();
     },
     reset() {
       this.dice = [...cleverHochDrei];
-      this.dice.forEach(die => (die.value = 0));
+      this.dice.forEach((die) => (die.value = 0));
       this.discardedDice = [];
       this.chosenDice = [];
       this.sendMessage();
@@ -123,7 +127,7 @@ export default {
           JSON.stringify({
             dice: this.dice,
             discardedDice: this.discardedDice,
-            chosenDice: this.chosenDice
+            chosenDice: this.chosenDice,
           })
         );
       });
@@ -132,8 +136,8 @@ export default {
       this.dice = eventData.dice;
       this.discardedDice = eventData.discardedDice;
       this.chosenDice = eventData.chosenDice;
-    }
-  }
+    },
+  },
 };
 </script>
 
