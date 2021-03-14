@@ -33,8 +33,8 @@
         @clicked="returnChosenDice(die)" />
     </div>
     <div class="controls">
-      <button class="button" @click="roll">Roll Dice</button>
-      <button class="button" @click="reset">Reset</button>
+      <button class="button button--roll" @click="roll">Roll</button>
+      <button class="button button--reset" @click="reset">Reset</button>
     </div>
   </div>
 </template>
@@ -106,8 +106,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  padding: 20px 0 0 20px;
+  color: #111;
+  padding: 20px 0 0 30px;
   display:flex;
   justify-content: flex-start;
   flex-wrap:wrap;
@@ -117,6 +117,7 @@ body {
   width:100%;
   text-align:center;
   font-size:70px;
+  transform:rotate(-5deg);
 }
 .discarded {
   width:80%;
@@ -150,7 +151,7 @@ body {
   max-width:calc(870px - 670px);
   overflow:hidden;
   margin-left:2%;
-  box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.3);
   border-radius: 40px;
   display:flex;
   flex-direction: column;
@@ -170,6 +171,7 @@ body {
   background: url('./assets/velvet.jpg');
   background-size:cover;
   filter: hue-rotate(63deg) brightness(4);
+  mix-blend-mode: screen;
 }
 
 .controls {
@@ -189,10 +191,39 @@ body {
     font-size:25px;
     border:none;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 10px 20px 5px;
     text-transform: uppercase;
     font-weight: bold;
     margin: 0 20px;
     font-family: inherit;
+    position: relative;
+    outline: none;
+    cursor:pointer;
+    
+}
+.button::before {
+  content: "";
+  width:105%;
+  height:105%;
+  background:#222;
+  position: absolute;
+  z-index:-2;
+  top:6px;
+  left:3px;
+}
+.button--roll {
+  width:150px;
+  height:150px;
+  border-radius: 50%;
+  font-size: 60px;
+  padding: 10px 20px 0px;
+}
+.button--roll::before {
+  border-radius:50%;
+}
+.button--reset {
+  background:#2c3e50;
+  color:#FFF;
+  margin-top:50px;
 }
 </style>
