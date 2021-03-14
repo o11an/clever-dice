@@ -50,7 +50,7 @@ export default {
   border-radius: 20px;
   font-weight:bold;
   font-size:50px;
-  box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 18px -7px rgba(0, 0, 0, 0.7);
   transition: box-shadow 200ms ease;
   margin: 10px;
   padding:10px;
@@ -60,7 +60,7 @@ export default {
   cursor:pointer
 }
 .die:hover {
-  box-shadow: 0 0 20px -7px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 22px -7px rgba(0, 0, 0, 0.9);
 }
 .die--1 {
   align-items: center;
