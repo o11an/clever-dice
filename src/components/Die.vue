@@ -1,6 +1,17 @@
 <template>
-  <button class="die" :class="'die--'+ dieValue" :style="'background-color:' + color + ';color:'+ dotColor" @click="$emit('clicked')">
-    <div v-for="n in dieValue" :key="n" class="dot" :style="'background-color:' + dotColor"></div>
+  <button
+    v-if="value > 0"
+    class="die"
+    :class="'die--' + value"
+    :style="'background-color:' + color + ';color:' + dotColor"
+    @click="$emit('clicked')"
+  >
+    <div
+      v-for="n in value"
+      :key="n"
+      class="dot"
+      :style="'background-color:' + dotColor"
+    ></div>
   </button>
 </template>
 
@@ -8,37 +19,21 @@
 export default {
   name: 'Die',
   props: {
-    roll: {
-      type: Number,
-      required: true
-    },
     color: {
       type: String,
-      required: true
+      required: true,
     },
-    staticValue: {
+    value: {
       type: Number,
     },
     dotColor: {
       type: String,
-      required: true
-    }
-  } ,
-  data: () => ({
-    value: 0
-  }),
-  watch: {
-    roll() {
-      this.value = Math.floor(Math.random() * 6) + 1;
-      this.$emit('changed', this.value);
-    } 
+      required: true,
+    },
   },
-  computed: {
-    dieValue() {
-      return this.staticValue || this.value;
-    }
-  }
-}
+  watch: {},
+  computed: {},
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -46,22 +41,22 @@ export default {
 .die {
   width: 100px;
   height: 100px;
-  border:none;
+  border: none;
   border-radius: 20px;
-  font-weight:bold;
-  font-size:50px;
+  font-weight: bold;
+  font-size: 50px;
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.5);
   margin: 10px;
-  padding:1%;
-  display:flex;
+  padding: 1%;
+  display: flex;
 }
 .die--1 {
   align-items: center;
   justify-content: center;
 }
-.die--2, 
+.die--2,
 .die--3 {
-  display:flex;
+  display: flex;
   justify-content: space-between;
 }
 .die--2 .dot:last-child,
@@ -72,13 +67,11 @@ export default {
   align-self: center;
 }
 .die--4 {
-  
 }
 .die--2 {
-
 }
 .dot {
-  width: 25%; 
+  width: 25%;
   height: 25%;
   border-radius: 50%;
 }
