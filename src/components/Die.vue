@@ -53,8 +53,6 @@ export default {
   display: flex;
   justify-content: space-between;
   position: relative;
-  cursor: pointer;
-  outline: none;
 }
 .die:hover {
   box-shadow: 0 0 22px -7px rgba(0, 0, 0, 0.9);

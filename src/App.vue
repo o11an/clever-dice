@@ -1,5 +1,13 @@
 <template>
   <div id="app">
+    <button class="settings-button" @click="toggleSettings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
+        <path
+          d="M1145.49153 645.4237q0-106-75-181t-181-75q-106 0-181 75t-75 181q0 106 75 181t181 75q106 0 181-75t75-181zm512-109v222q0 12-8 23t-20 13l-185 28q-19 54-39 91 35 50 107 138 10 12 10 25t-9 23q-27 37-99 108t-94 71q-12 0-26-9l-138-108q-44 23-91 38-16 136-29 186-7 28-36 28h-222q-14 0-24.5-8.5t-11.5-21.5l-28-184q-49-16-90-37l-141 107q-10 9-25 9-14 0-25-11-126-114-165-168-7-10-7-23 0-12 8-23 15-21 51-66.5t54-70.5q-27-50-41-99l-183-27q-13-2-21-12.5t-8-23.5v-222q0-12 8-23t19-13l186-28q14-46 39-92-40-57-107-138-10-12-10-24 0-10 9-23 26-36 98.5-107.5t94.5-71.5q13 0 26 10l138 107q44-23 91-38 16-136 29-186 7-28 36-28h222q14 0 24.5 8.5t11.5 21.5l28 184q49 16 90 37l142-107q9-9 24-9 13 0 25 10 129 119 165 170 7 8 7 22 0 12-8 23-15 21-51 66.5t-54 70.5q26 50 41 98l183 28q13 2 21 12.5t8 23.5z"
+          fill="#FFF"
+        />
+      </svg>
+    </button>
     <div class="logo">clever dice</div>
     <div class="discarded">
       <Die
@@ -38,26 +46,66 @@
       <button class="button button--roll" @click="roll">Roll</button>
       <button class="button button--reset" @click="reset">Reset</button>
     </div>
+    <transition name="fade">
+      <div v-if="settingsVisible" class="settings">
+        <div class="settings-inner">
+          <button class="settings-close" @click="toggleSettings">x</button>
+          <h3>Choose game</h3>
+          <button
+            v-for="(game, index) in games"
+            :key="index"
+            class="settings-choice"
+            :class="{ 'current-choice': game.name === currentGame.name }"
+            @click="setGame(game)"
+          >
+            {{ game.name }}
+          </button>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import Die from './components/Die.vue';
-import { cleverHochDrei } from './settings.js';
+import {
+  ganzSchonClever,
+  doppeltSoClever,
+  cleverHochDrei,
+} from './settings.js';
 export default {
   name: 'App',
   components: {
     Die,
   },
   data: () => ({
-    dice: [...cleverHochDrei],
+    dice: [],
     discardedDice: [],
     chosenDice: [],
+    currentGame: null,
     diceRollSound: new Audio(require('./assets/dice-roll.mp3')),
     connection: null,
+    games: [
+      {
+        name: 'Ganz Schön Clever',
+        dice: ganzSchonClever,
+      },
+      {
+        name: 'Doppelt So Clever',
+        dice: doppeltSoClever,
+      },
+      {
+        name: 'Clever Hoch Drei',
+        dice: cleverHochDrei,
+      },
+    ],
+    settingsVisible: false,
   }),
+  created() {
+    this.setGame(this.games[0]);
+  },
   mounted() {
-    var url = new URL(window.location.href);
+    let url = new URL(window.location.href);
 
     url.protocol = url.protocol.replace('http', 'ws');
 
@@ -115,7 +163,7 @@ export default {
       this.sendMessage();
     },
     reset() {
-      this.dice = [...cleverHochDrei];
+      this.dice = [...this.currentGame.dice];
       this.dice.forEach((die) => (die.value = 0));
       this.discardedDice = [];
       this.chosenDice = [];
@@ -137,6 +185,16 @@ export default {
       this.discardedDice = eventData.discardedDice;
       this.chosenDice = eventData.chosenDice;
     },
+    setGame(game) {
+      if (this.currentGame) {
+        this.reset();
+      }
+      this.currentGame = game;
+      this.dice = [...this.currentGame.dice];
+    },
+    toggleSettings() {
+      this.settingsVisible = !this.settingsVisible;
+    },
   },
 };
 </script>
@@ -150,6 +208,11 @@ body {
   background: url('./assets/bg-pattern.jpg');
   background-size: 50px;
   height: 100vh;
+}
+button {
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
 }
 #app {
   font-family: 'Ravi Prakash', cursive;
@@ -204,7 +267,7 @@ body {
   overflow: hidden;
   margin-left: 3%;
   box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.3);
-  border-radius: 40px;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -236,13 +299,12 @@ body {
   width: 20vw;
   height: 100vh;
   position: fixed;
-  right: 0;
+  right: 20px;
   top: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #333;
 }
 .button {
   background: #fc0;
@@ -253,10 +315,7 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   margin: 0 20px;
-  font-family: inherit;
   position: relative;
-  outline: none;
-  cursor: pointer;
 }
 .button::before {
   content: '';
@@ -267,13 +326,14 @@ body {
   z-index: -2;
   top: 6px;
   left: 3px;
+  border-radius: 5px;
 }
 .button--roll {
-  width: 150px;
-  height: 150px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  font-size: 60px;
-  padding: 10px 20px 0px;
+  font-size: 50px;
+  padding: 15px 20px 0px;
 }
 .button--roll::before {
   border-radius: 50%;
@@ -282,5 +342,88 @@ body {
   background: #2c3e50;
   color: #fff;
   margin-top: 50px;
+}
+
+.settings-button {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: #333;
+  border-radius: 10px;
+  padding: 5px;
+  z-index: 5;
+}
+
+.settings {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings h3 {
+  font-size: 30px;
+}
+
+.settings-inner {
+  width: 320px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+}
+
+.settings-close {
+  border-radius: 50%;
+  background: #fc0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  right: -15px;
+  top: -15px;
+  padding-bottom: 4px;
+  border: none;
+}
+
+.settings-choice {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  font-size: 20px;
+  border: none;
+  background: #2c3e50;
+  color: #fff;
+  border-radius: 6px;
+  position: relative;
+}
+
+.current-choice {
+  background: green;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.fade-enter,
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

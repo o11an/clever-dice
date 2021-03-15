@@ -6,7 +6,7 @@ const ganzSchonClever = [
     value: 0,
   },
   {
-    color: '#fedc00',
+    color: '#ffc502',
     dotColor: '#1b1d20',
     roll: 0,
     value: 0,
@@ -30,7 +30,7 @@ const ganzSchonClever = [
     value: 0,
   },
   {
-    color: '#0085cd',
+    color: '#293489',
     dotColor: '#f9de68',
     roll: 0,
     value: 0,
@@ -88,7 +88,7 @@ const cleverHochDrei = [
     value: 0,
   },
   {
-    color: '#fbce0a',
+    color: '#ffc502',
     dotColor: '#1b1d20',
     roll: 0,
     value: 0,
@@ -106,7 +106,7 @@ const cleverHochDrei = [
     value: 0,
   },
   {
-    color: '#37317b',
+    color: '#293489',
     dotColor: '#ffe686',
     roll: 0,
     value: 0,
